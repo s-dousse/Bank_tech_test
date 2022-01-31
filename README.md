@@ -40,8 +40,8 @@ I would like to see my bank statement.
 
 ## Specifications:
 
-- [ ] make a **deposit**
-- [ ] make a **withdrawal**
+- [x] make a **deposit**
+- [x] make a **withdrawal**
 - [ ] creates a statement when a deposit is made (date, amount and balance)
 - [ ] creates a statement when a withdrawal is made (date, amount and balance)
 - [ ] show a list of **statements**
@@ -64,3 +64,13 @@ date || credit || debit || balance
 13/01/2023 || 2000.00 || || 3000.00
 10/01/2023 || 1000.00 || || 1000.00
 ```
+
+### Notes and Thoughts
+
+**BankAccount class** : After creating a [Diagram (based on the specifications)](./img/Screenshot%202022-01-31%20at%2016.45.12.png), I realised that the `#withdraw` and `#deposit` methods would no longer return the `@balance` once I've added the Statement class.
+This is why I created a `#print_balance` method to keep track of the current balance like #print_statements will keep track of all statements.
+
+The `#withdraw` and `#deposit` methods will have an extra argument (date) in the future.
+
+**Statement class** :My methods `#save_credit` and `#save_debit` are too similar to be different methods.
+Merging them into one method and adding a status: like true makes is a credit statement and false a debit statement would help to keep my code DRY.
