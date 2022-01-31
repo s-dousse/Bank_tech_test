@@ -15,7 +15,7 @@ clone this repo
 
 ```
 > bundle install
-> rspec # run test to ensure it works
+> rspec # run tests to ensure everything works
 ```
 
 ### User stories
@@ -45,6 +45,7 @@ I would like to see my bank statement.
 - [ ] creates a statement when a deposit is made (date, amount and balance)
 - [ ] creates a statement when a withdrawal is made (date, amount and balance)
 - [ ] show a list of **statements**
+- [x] edge cases
 
 edge cases:
 

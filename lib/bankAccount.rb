@@ -13,7 +13,12 @@ class BankAccount
     @balance += amount
   end
 
-  def withdraw(amount) 
-    @balance -= amount
+  def withdraw(amount)
+     fail "Sorry, your balance is insufficient" unless sufficient_funds?(amount)
+      @balance -= amount
   end 
+
+  def sufficient_funds?(amount)
+    (@balance - amount) >= DEFAULT_BALANCE
+  end
 end

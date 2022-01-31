@@ -5,19 +5,27 @@ describe BankAccount do
   describe "seeing and changing the balance of an account" do
     let!(:account) { BankAccount.new }
 
-    it "has a default balance of 0 when opened" do
-      expect(account.print_balance).to include "0.00"
+    context "the account has sufficient funds" do
+      it "has a default balance of 0 when opened" do
+        expect(account.print_balance).to include "0.00"
+      end
+
+      it "can receive money" do
+        account.deposit(50.00)
+        expect(account.print_balance).to include "50.00"
+      end
+
+      it "can withdraw money" do
+        account.deposit(50.00)
+        account.withdraw(30.00)
+        expect(account.print_balance).to include "20.00"
+      end
     end
 
-    it "can receive money" do
-      account.deposit(50.00)
-      expect(account.print_balance).to include "50.00"
-    end
-
-    it "can withdraw money" do
-      account.deposit(50.00)
-      account.withdraw(30.00)
-      expect(account.print_balance).to include "20.00"
+    context "the account has insufficient funds" do
+      it "can't have a balance below 0" do
+        expect { account.withdraw(30.00) }.to raise_error "Sorry, your balance is insufficient"
+      end
     end
   end
 end
