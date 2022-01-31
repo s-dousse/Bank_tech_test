@@ -18,6 +18,7 @@ class BankAccount
       @balance -= amount
   end 
 
+  private
   def sufficient_funds?(amount)
     (@balance - amount) >= DEFAULT_BALANCE
   end
