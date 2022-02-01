@@ -1,7 +1,7 @@
 {
   "RSpec": {
     "coverage": {
-      "/Users/Swa/Desktop/Projects/week10/Bank tech test/spec/bankAccount_spec.rb": {
+      "/Users/Swa/Desktop/Projects/week10/Bank_tech_test/spec/bankAccount_spec.rb": {
         "lines": [
           1,
           null,
@@ -36,7 +36,7 @@
           null
         ]
       },
-      "/Users/Swa/Desktop/Projects/week10/Bank tech test/lib/bankAccount.rb": {
+      "/Users/Swa/Desktop/Projects/week10/Bank_tech_test/lib/bankAccount.rb": {
         "lines": [
           1,
           1,
@@ -65,7 +65,7 @@
           null
         ]
       },
-      "/Users/Swa/Desktop/Projects/week10/Bank tech test/spec/statement_spec.rb": {
+      "/Users/Swa/Desktop/Projects/week10/Bank_tech_test/spec/statement_spec.rb": {
         "lines": [
           1,
           null,
@@ -113,7 +113,7 @@
           null
         ]
       },
-      "/Users/Swa/Desktop/Projects/week10/Bank tech test/lib/statement.rb": {
+      "/Users/Swa/Desktop/Projects/week10/Bank_tech_test/lib/statement.rb": {
         "lines": [
           1,
           1,
@@ -156,6 +156,6 @@
         ]
       }
     },
-    "timestamp": 1643677174
+    "timestamp": 1643712881
   }
 }

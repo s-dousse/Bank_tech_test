@@ -15,7 +15,7 @@ class Statement
       statement.merge!(:debit => "-")
       statement.merge!(:credit => format_string(amount))
     end
-    @statements << statement
+    @statements.unshift(statement)
   end
 
   def print_statements

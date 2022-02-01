@@ -35,9 +35,9 @@ describe Statement do
         statement.save_statement(100, "31/01/22", 1500, true)
         statement.save_statement(1500, "01/02/22", 3000, true)
         statement.save_statement(500, "02/02/22", 2500, false)
-        expect(statement.print_statements[1]).to include("31/01/22 || 100.00 || - || 1500.00")
+        expect(statement.print_statements[3]).to include("31/01/22 || 100.00 || - || 1500.00")
         expect(statement.print_statements[2]).to include("01/02/22 || 1500.00 || - || 3000.00")
-        expect(statement.print_statements[3]).to include("02/02/22 || - || 500.00 || 2500.00")
+        expect(statement.print_statements[1]).to include("02/02/22 || - || 500.00 || 2500.00")
       end
     end
   end
