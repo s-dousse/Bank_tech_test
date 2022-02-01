@@ -4,15 +4,13 @@ class Statement
 
   def save_statement(amount, date, balance, status)
     statement = {
-      :date => date,
-      :balance => format_string(balance)
+      date: date,
+      balance: format_string(balance)
     }
     if is_a_debit?(status)
-      statement.merge!(:debit => format_string(amount))
-      statement.merge!(:credit => "-")
+      statement.merge!(debit: format_string(amount), credit: "-")
     else
-      statement.merge!(:debit => "-")
-      statement.merge!(:credit => format_string(amount))
+      statement.merge!(debit: "-", credit: format_string(amount))
     end
     statement
   end

@@ -14,30 +14,31 @@ class BankAccount
     "The current balance is #{sprintf('%.2f', @balance)}"
   end
 
-  def deposit(amount, date, statement = Statement.new) 
+  def deposit(amount, date) 
     @balance += amount
-    new_statement = statement.save_statement(amount, date, @balance, true)
-    @statements.unshift(new_statement)
+    save_transaction(amount, date, true)
   end
 
-  def withdraw(amount, date, statement = Statement.new)
+  def withdraw(amount, date)
     fail "Sorry, your balance is insufficient" unless sufficient_funds?(amount)
     @balance -= amount
-    new_statement = statement.save_statement(amount, date, @balance, false)
-    @statements.unshift(new_statement)
+    save_transaction(amount, date, false)
   end
 
   def print_statements
-    delimiter = " || "
-    header = "date || credit || debit || balance"
-    list = @statements.map do |statement|
-      "#{statement[:date]}" + delimiter + "#{statement[:debit]}"  + delimiter + "#{statement[:credit]}"  + delimiter + "#{statement[:balance]}"
-    end
-    list.unshift(header)
+    list = @statements.map { |statement|
+      "#{statement[:date]}" + " || " + "#{statement[:debit]}"  + " || " + "#{statement[:credit]}"  + " || " + "#{statement[:balance]}"
+    }.unshift("date || credit || debit || balance")
   end
 
   private
   def sufficient_funds?(amount)
     (@balance - amount) >= DEFAULT_BALANCE
+  end
+
+  def save_transaction(amount, date, status)
+    statement = Statement.new
+    statement.save_statement(amount, date, @balance, status)
+    @statements.unshift(statement)
   end
 end

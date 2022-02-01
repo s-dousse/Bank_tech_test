@@ -60,13 +60,15 @@ describe BankAccount do
     context "the account has insufficient funds" do
       it "creates no statement - withdraw from an empty account" do
         expect { account.withdraw(30.00, "02/01/22") }.to raise_error "Sorry, your balance is insufficient"
+
         expect(account.print_statements.length).to be(1)
       end
 
       it "creates no statement - insufficient funds" do
         account.deposit(50.00, "01/01/22")
         expect { account.withdraw(60.00, "02/01/22") }.to raise_error "Sorry, your balance is insufficient"
-        expect(account.print_statements.length).to be(2)
+        expect(account.print_balance).to include "50.00"
+        expect(account.statements.length).to be(1)
       end
     end
   end
