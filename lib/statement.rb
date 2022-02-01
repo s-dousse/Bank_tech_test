@@ -1,4 +1,7 @@
+require_relative 'bankAccount'
+
 class Statement
+  
   def initialize
     @statements = []
   end

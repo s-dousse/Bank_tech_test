@@ -11,20 +11,20 @@ describe BankAccount do
       end
 
       it "can receive money" do
-        account.deposit(50.00)
+        account.deposit(50.00, "01/01/22")
         expect(account.print_balance).to include "50.00"
       end
 
       it "can withdraw money" do
-        account.deposit(50.00)
-        account.withdraw(30.00)
+        account.deposit(50.00, "01/01/22")
+        account.withdraw(30.00, "02/01/22")
         expect(account.print_balance).to include "20.00"
       end
     end
 
     context "the account has insufficient funds" do
       it "can't have a balance below 0" do
-        expect { account.withdraw(30.00) }.to raise_error "Sorry, your balance is insufficient"
+        expect { account.withdraw(30.00, "02/01/22") }.to raise_error "Sorry, your balance is insufficient"
       end
     end
   end
