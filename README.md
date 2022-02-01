@@ -1,6 +1,6 @@
 # Bank Tech Test
 
-This is my first tech test , I will practice my OO design and TDD skills, aiming to produce the best code I can when there is a minimal time pressure.
+In my first tech test, I will practice my OO design and TDD skills to produce the best code with minimal time pressure.
 
 ### Tools
 
@@ -49,8 +49,8 @@ I would like to see my bank statement.
 
 edge cases:
 
-- user withdraws more money than she has on her account ?
-- user can input the a negative balance when creating a statement?
+- user withdraws more money than she has on her account?
+- user can input a negative balance when creating a statement?
 - the amount withdrawn or deposit can't be negative?
 
 ## Acceptance criteria
@@ -70,13 +70,13 @@ date || credit || debit || balance
 
 ### Notes and Thoughts
 
-**BankAccount class** : After creating a [Diagram (based on the specifications)](./img/Screenshot%202022-01-31%20at%2016.45.12.png), I realised that the `#withdraw` and `#deposit` methods would no longer return the `@balance` once I've added the Statement class.
-This is why I created a `#print_balance` method to keep track of the current balance like #print_statements will keep track of all statements.
+**BankAccount class**: After creating a [Diagram (based on the specifications)](./img/Screenshot%202022-01-31%20at%2016.45.12.png), I realised that the `#withdraw` and `#deposit` methods would no longer return the `@balance` once I've added the Statement class.
+This is why I created a `#print_balance` method to keep track of the current balance, like #print_statements will keep track of all statements.
 
 The `#withdraw` and `#deposit` methods will have an extra argument (date) in the future.
 
 **Statement class** :My methods `#save_credit` and `#save_debit` are too similar to be different methods.
-Merging them into one method and adding a status: like true makes is a credit statement and false a debit statement would help to keep my code DRY.
+Merging them into one method and adding a status: `true` makes is a credit statement, and `false` a debit statement would help keep my code DRY.
 
 ### IRB feature test for Statement class
 
@@ -98,7 +98,7 @@ date || credit || debit || balance
  => nil
 ```
 
-So we are pretty close. The Statement class behaves as we expect, next step will be letting the Bank class create statement each time there is a withdrawal or deposit.
+So we are pretty close. The Statement class behaves as we expect; the next step will be letting the Bank class create a statement each time there is a withdrawal or deposit.
 
 I will inject the statement class into the bank class so that any withdrawal or deposit will automatically create a statement.
 
@@ -130,3 +130,4 @@ date || credit || debit || balance
 13/01/23 || 2000.00 || - || 3000.00
 10/01/23 || 1000.00 || - || 1000.00
 ```
+100% coverage
