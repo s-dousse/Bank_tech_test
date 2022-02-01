@@ -42,9 +42,9 @@ I would like to see my bank statement.
 
 - [x] make a **deposit**
 - [x] make a **withdrawal**
-- [ ] creates a statement when a deposit is made (date, amount and balance)
-- [ ] creates a statement when a withdrawal is made (date, amount and balance)
-- [ ] show a list of **statements**
+- [x] creates a statement when a deposit is made (date, amount and balance)
+- [x] creates a statement when a withdrawal is made (date, amount and balance)
+- [x] show a list of **statements**
 - [x] edge cases
 
 edge cases:
@@ -75,3 +75,26 @@ The `#withdraw` and `#deposit` methods will have an extra argument (date) in the
 
 **Statement class** :My methods `#save_credit` and `#save_debit` are too similar to be different methods.
 Merging them into one method and adding a status: like true makes is a credit statement and false a debit statement would help to keep my code DRY.
+
+### IRB feature test for Statement class
+
+```
+3.0.3 :001 > load "./lib/statement.rb"
+ => true
+3.0.3 :002 > statement = Statement.new
+ => #<Statement:0x00007f9e65a70b10 @statements=[]>
+3.0.3 :003 > statement.save_statement(100, "31/01/22", 1500, true)
+ => [{:date=>"31/01/22", :balance=>"1500.00", :debit=>"100.00", :credit=>"-"}]
+3.0.3 :004 > statement.save_statement(150, "03/02/22", 2000, false)
+ =>
+[{:date=>"31/01/22", :balance=>"1500.00", :debit=>"100.00", :credit=>"-"},
+ {:date=>"03/02/22", :balance=>"2000.00", :debit=>"-", :credit=>"150.00"}]
+3.0.3 :005 > puts statement.print_statements
+date || credit || debit || balance
+31/01/22 || 100.00 || - || 1500.00
+03/02/22 || - || 150.00 || 2000.00
+ => nil
+3.0.3 :006 >
+```
+
+So we are pretty close. The Statement class behaves as we expect, next step will be letting the Bank class create statement each time there is a withdrawal or deposit.
