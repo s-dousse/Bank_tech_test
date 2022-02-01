@@ -1,10 +1,6 @@
 require_relative 'bankAccount'
 
 class Statement
-  
-  def initialize
-    @statements = []
-  end
 
   def save_statement(amount, date, balance, status)
     statement = {
@@ -18,16 +14,7 @@ class Statement
       statement.merge!(:debit => "-")
       statement.merge!(:credit => format_string(amount))
     end
-    @statements.unshift(statement)
-  end
-
-  def print_statements
-    delimiter = " || "
-    header = "date || credit || debit || balance"
-    list = @statements.map do |statement|
-      "#{statement[:date]}" + delimiter + "#{statement[:debit]}"  + delimiter + "#{statement[:credit]}"  + delimiter + "#{statement[:balance]}"
-    end
-    list.unshift(header)
+    statement
   end
 
   private

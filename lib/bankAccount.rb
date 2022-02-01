@@ -3,6 +3,8 @@ require_relative 'statement'
 class BankAccount
   DEFAULT_BALANCE = 0.00
 
+  attr_reader :statements
+
   def initialize()
     @balance = DEFAULT_BALANCE
     @statements = []
@@ -28,7 +30,7 @@ class BankAccount
   def print_statements
     delimiter = " || "
     header = "date || credit || debit || balance"
-    list = @statements.flatten.map do |statement|
+    list = @statements.map do |statement|
       "#{statement[:date]}" + delimiter + "#{statement[:debit]}"  + delimiter + "#{statement[:credit]}"  + delimiter + "#{statement[:balance]}"
     end
     list.unshift(header)
