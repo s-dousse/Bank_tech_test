@@ -24,7 +24,7 @@ class Statement
     list = @statements.map do |statement|
       "#{statement[:date]}" + delimiter + "#{statement[:debit]}"  + delimiter + "#{statement[:credit]}"  + delimiter + "#{statement[:balance]}"
     end
-    list.insert(0, header)
+    list.unshift(header)
   end
 
   private

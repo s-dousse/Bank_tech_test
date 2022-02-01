@@ -45,11 +45,13 @@ I would like to see my bank statement.
 - [x] creates a statement when a deposit is made (date, amount and balance)
 - [x] creates a statement when a withdrawal is made (date, amount and balance)
 - [x] show a list of **statements**
-- [x] edge cases
+- [ ] edge cases
 
 edge cases:
 
 - user withdraws more money than she has on her account ?
+- user can input the a negative balance when creating a statement?
+- the amount withdrawn or deposit can't be negative?
 
 ## Acceptance criteria
 
@@ -82,7 +84,7 @@ Merging them into one method and adding a status: like true makes is a credit st
 3.0.3 :001 > load "./lib/statement.rb"
  => true
 3.0.3 :002 > statement = Statement.new
- => #<Statement:0x00007f9e65a70b10 @statements=[]>
+ => #<Statement:0x00007fd9940c4570 @statements=[]>
 3.0.3 :003 > statement.save_statement(100, "31/01/22", 1500, true)
  => [{:date=>"31/01/22", :balance=>"1500.00", :debit=>"100.00", :credit=>"-"}]
 3.0.3 :004 > statement.save_statement(150, "03/02/22", 2000, false)
@@ -94,7 +96,16 @@ date || credit || debit || balance
 31/01/22 || 100.00 || - || 1500.00
 03/02/22 || - || 150.00 || 2000.00
  => nil
-3.0.3 :006 >
 ```
 
 So we are pretty close. The Statement class behaves as we expect, next step will be letting the Bank class create statement each time there is a withdrawal or deposit.
+
+I will inject the statement class into the bank class so that any withdrawal or deposit will automatically create a statement.
+
+the flow for the user will be as follow:
+
+- a user can create an account
+- a user can make a deposit
+- a user can see her current balance
+- a user can make a withdrawal
+- a user can see all her statements (newest first)
