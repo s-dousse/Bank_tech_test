@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'statement'
 
 class BankAccount
@@ -5,33 +7,35 @@ class BankAccount
 
   attr_reader :statements
 
-  def initialize()
+  def initialize
     @balance = DEFAULT_BALANCE
     @statements = []
   end
 
   def print_balance
-    "The current balance is #{sprintf('%.2f', @balance)}"
+    "The current balance is #{format('%.2f', @balance)}"
   end
 
-  def deposit(amount, date) 
+  def deposit(amount, date)
     @balance += amount
     save_transaction(amount, date, true)
   end
 
   def withdraw(amount, date)
-    fail "Sorry, your balance is insufficient" unless sufficient_funds?(amount)
+    raise 'Sorry, your balance is insufficient' unless sufficient_funds?(amount)
+
     @balance -= amount
     save_transaction(amount, date, false)
   end
 
   def print_statements
-    list = @statements.map { |statement|
-      "#{statement[:date]}" + " || " + "#{statement[:debit]}"  + " || " + "#{statement[:credit]}"  + " || " + "#{statement[:balance]}"
-    }.unshift("date || credit || debit || balance")
+    @statements.map do |statement|
+      "#{statement[:date]} || #{statement[:debit]} || #{statement[:credit]} || #{statement[:balance]}"
+    end.unshift('date || credit || debit || balance')
   end
 
   private
+
   def sufficient_funds?(amount)
     (@balance - amount) >= DEFAULT_BALANCE
   end
