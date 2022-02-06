@@ -26,14 +26,14 @@ describe BankAccount do
 
     context 'the account has sufficient funds' do
       it 'has no statement when just opened' do
-        expect(account.print_statements.length).to eq(1)
+        expect(account.print_statements.length).to eq 1
         expect(account.print_statements[0]).to eq('date || credit || debit || balance')
       end
 
       it 'has 1 credit statement after a deposit' do
         account.statement.statements << double_credit_st
         
-        expect(account.print_statements.length).to be(2)
+        expect(account.print_statements.length).to eq 2
         expect(account.print_statements[0]).to eq('date || credit || debit || balance')
         expect(account.print_statements[1]).to eq('01/01/22 || 100.00 ||  || 100.00')
       end
@@ -41,7 +41,7 @@ describe BankAccount do
       it 'has 1 debit statement after a withdral' do
         account.statement.statements << double_debit_st
 
-        expect(account.print_statements.length).to eq(2)
+        expect(account.print_statements.length).to eq 2
         expect(account.print_statements[0]).to eq('date || credit || debit || balance')
         expect(account.print_statements[1]).to eq('02/01/22 ||  || 50.00 || 50.00')
       end
@@ -69,7 +69,7 @@ describe BankAccount do
 
       it 'creates no statement - insufficient funds' do
         account.deposit(50.00)
-        
+
         expect { account.withdraw(60.00) }.to raise_error 'Sorry, your balance is insufficient'
         expect(account.print_statements.length).to eq 2
       end

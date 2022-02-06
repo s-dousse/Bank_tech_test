@@ -110,24 +110,13 @@ the flow for the user will be as follow:
 - a user can make a withdrawal
 - a user can see all her statements (newest first)
 
-**Feature Test for accepting criteria**
-```
-3.0.3 :001 > account = BankAccount.new
- => #<BankAccount:0x00007fa0e60ae5b8 @balance=0.0, @statements=[]> 
-3.0.3 :002 > account.deposit(1000, "10/01/23")
- => [{:date=>"10/01/23", :balance=>"1000.00", :debit=>"1000.00", :credit=>"-"}] 
-3.0.3 :003 > account.deposit(2000, "13/01/23")
-[{:date=>"13/01/23", :balance=>"3000.00", :debit=>"2000.00", :credit=>"-"},
- {:date=>"10/01/23", :balance=>"1000.00", :debit=>"1000.00", :credit=>"-"}] 
-3.0.3 :004 > account.withdraw(500, "14/01/23")
- => 
-[{:date=>"14/01/23", :balance=>"2500.00", :debit=>"-", :credit=>"500.00"},
- {:date=>"13/01/23", :balance=>"3000.00", :debit=>"2000.00", :credit=>"-"},
- {:date=>"10/01/23", :balance=>"1000.00", :debit=>"1000.00", :credit=>"-"}]
-3.0.3 :005 > puts account.print_statements
-date || credit || debit || balance
-14/01/23 || - || 500.00 || 2500.00
-13/01/23 || 2000.00 || - || 3000.00
-10/01/23 || 1000.00 || - || 1000.00
-```
-100% coverage
+**Amends based on 1st feedback**
+
+- remove '-' and print_balance
+- move the `@balance` attribute from the BankAccount class to the Statement class as we had a slight duplication here
+- don't let the client input the date
+- change the `is_debit?` method to use strings like 'debit' instead of true or false
+- don't format the statement in the BankAccount class (SRP)
+- remove `unshift` use `push` or shover operator for better optimisation
+
+![irb test](./img/Screenshot%202022-02-06%20at%2022.58.43.png)
