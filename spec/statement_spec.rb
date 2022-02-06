@@ -6,26 +6,22 @@ describe Statement do
   describe '#save_statement' do
     let!(:statement) { Statement.new }
 
-    it 'has a default balance of 0 when opened' do
-        expect(statement.balance).to eq 0
-      end
-
     it 'creates a credit statement when a deposit is made' do
-      credit_statement = statement.save_statement(1000, '02/02/22', 'credit')
+      credit_statement = statement.save_statement(1000, 'credit', '02/02/22',)
 
       expect(credit_statement[0]).to eq(date: '02/02/22', debit: nil, credit: '1000.00', balance: '1000.00')
     end
 
     it 'creates a debit statement when a withdrawal is made' do
-      statement.save_statement(1000, '02/02/22', 'credit')
-      debit_statement = statement.save_statement(500, '01/02/22', 'debit')
+      statement.save_statement(1000, 'credit', '02/02/22')
+      debit_statement = statement.save_statement(500, 'debit', '01/02/22')
 
       expect(debit_statement[1]).to eq(date: '01/02/22', debit: '500.00', credit: nil, balance: '500.00')
     end
 
     context 'the account has insufficient funds' do
       it "can't have a balance below 0" do
-        expect { statement.save_statement(500, '01/02/22', 'debit') }.to raise_error 'Sorry, your balance is insufficient'
+        expect { statement.save_statement(500, 'debit', '01/02/22') }.to raise_error 'Sorry, your balance is insufficient'
       end
     end
   end
@@ -43,7 +39,7 @@ describe Statement do
     end
 
     it 'can format a credit statement' do
-      statement.save_statement(1000, '06/02/22', 'credit')
+      statement.save_statement(1000, 'credit', '06/02/22')
       formatted_statements = statement.format_statements
 
       expect(formatted_statements.length).to eq 2
@@ -51,8 +47,8 @@ describe Statement do
     end
 
     it 'can format a debit statement' do
-      statement.save_statement(1000, '06/02/22', 'credit')
-      statement.save_statement(300, '07/02/22', 'debit')
+      statement.save_statement(1000, 'credit', '06/02/22')
+      statement.save_statement(300, 'debit', '07/02/22')
       formatted_statements = statement.format_statements
 
       expect(formatted_statements.length).to eq 3
@@ -60,10 +56,10 @@ describe Statement do
     end
 
     it 'can format multiples statments (newest first)' do
-      statement.save_statement(1000, '06/02/22', 'credit')
-      statement.save_statement(300, '07/02/22', 'debit')
-      statement.save_statement(500, '08/02/22', 'credit')
-      statement.save_statement(100, '10/02/22', 'debit')
+      statement.save_statement(1000, 'credit', '06/02/22')
+      statement.save_statement(300, 'debit', '07/02/22')
+      statement.save_statement(500, 'credit', '08/02/22')
+      statement.save_statement(100, 'debit', '10/02/22')
       formatted_statements = statement.format_statements
       
       expect(formatted_statements.length).to eq 5
@@ -77,7 +73,7 @@ describe Statement do
     context 'the account has insufficient funds' do
       it "doesn't create a statement" do
         statement = Statement.new
-        expect { statement.save_statement(300, '07/02/22', 'debit') }.to raise_error 'Sorry, your balance is insufficient'
+        expect { statement.save_statement(300, 'debit', '07/02/22') }.to raise_error 'Sorry, your balance is insufficient'
         expect(statement.format_statements.length).to eq 1
       end
     end

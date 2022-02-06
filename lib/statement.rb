@@ -2,7 +2,7 @@
 
 class Statement
   
-  attr_reader :balance, :statements
+  attr_reader :statements
    
   DEFAULT_BALANCE = 0.00
  
@@ -11,11 +11,11 @@ class Statement
     @statements = []
   end
   
-  def save_statement(amount, date, status)
+  def save_statement(amount, transaction_type, date = get_date)
     statement = {
       date: date
     }
-    if a_debit?(status)
+    if a_debit?(transaction_type)
       raise 'Sorry, your balance is insufficient' unless sufficient_funds?(amount)
 
        @balance -= amount
@@ -51,5 +51,9 @@ class Statement
 
   def add_header(statements)
     statements << {date: 'date', debit: 'debit', credit: 'credit', balance: 'balance'}
+  end
+
+  def get_date
+    Time.now.strftime('%d/%m/%Y')
   end
 end
