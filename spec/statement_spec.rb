@@ -3,17 +3,83 @@
 require 'statement'
 
 describe Statement do
-  describe 'creating a statement' do
+  describe '#save_statement' do
     let!(:statement) { Statement.new }
 
-    it 'creates a debit statement when a withdrawal is made' do
-      debit_statement = statement.save_statement(100, '01/02/22', 1500, true)
-      expect(debit_statement).to eq(date: '01/02/22', debit: '100.00', credit: '-', balance: '1500.00')
-    end
+    it 'has a default balance of 0 when opened' do
+        expect(statement.balance).to eq 0
+      end
 
     it 'creates a credit statement when a deposit is made' do
-      credit_statement = statement.save_statement(150, '02/02/22', 2000, false)
-      expect(credit_statement).to eq(date: '02/02/22', debit: '-', credit: '150.00', balance: '2000.00')
+      credit_statement = statement.save_statement(1000, '02/02/22', 'credit')
+
+      expect(credit_statement[0]).to eq(date: '02/02/22', debit: nil, credit: '1000.00', balance: '1000.00')
+    end
+
+    it 'creates a debit statement when a withdrawal is made' do
+      statement.save_statement(1000, '02/02/22', 'credit')
+      debit_statement = statement.save_statement(500, '01/02/22', 'debit')
+
+      expect(debit_statement[1]).to eq(date: '01/02/22', debit: '500.00', credit: nil, balance: '500.00')
+    end
+
+    context 'the account has insufficient funds' do
+      it "can't have a balance below 0" do
+        expect { statement.save_statement(500, '01/02/22', 'debit') }.to raise_error 'Sorry, your balance is insufficient'
+      end
+    end
+  end
+
+  describe '#format_statements' do
+    let!(:statement) { Statement.new }
+
+    it 'adds a header only when printed not to the statements attribute' do
+      formatted_statements = statement.format_statements
+
+      expect(formatted_statements.length).to eq 1
+      expect(formatted_statements[0]).to eq 'date || credit || debit || balance'
+
+      expect(statement.statements).to eq []
+    end
+
+    it 'can format a credit statement' do
+      statement.save_statement(1000, '06/02/22', 'credit')
+      formatted_statements = statement.format_statements
+
+      expect(formatted_statements.length).to eq 2
+      expect(formatted_statements[1]).to eq '06/02/22 || 1000.00 ||  || 1000.00'
+    end
+
+    it 'can format a debit statement' do
+      statement.save_statement(1000, '06/02/22', 'credit')
+      statement.save_statement(300, '07/02/22', 'debit')
+      formatted_statements = statement.format_statements
+
+      expect(formatted_statements.length).to eq 3
+      expect(formatted_statements[1]).to eq '07/02/22 ||  || 300.00 || 700.00'
+    end
+
+    it 'can format multiples statments (newest first)' do
+      statement.save_statement(1000, '06/02/22', 'credit')
+      statement.save_statement(300, '07/02/22', 'debit')
+      statement.save_statement(500, '08/02/22', 'credit')
+      statement.save_statement(100, '10/02/22', 'debit')
+      formatted_statements = statement.format_statements
+      
+      expect(formatted_statements.length).to eq 5
+      expect(formatted_statements[0]).to eq 'date || credit || debit || balance'
+      expect(formatted_statements[1]).to eq '10/02/22 ||  || 100.00 || 1100.00'
+      expect(formatted_statements[2]).to eq '08/02/22 || 500.00 ||  || 1200.00'
+      expect(formatted_statements[3]).to eq '07/02/22 ||  || 300.00 || 700.00'
+      expect(formatted_statements[4]).to eq '06/02/22 || 1000.00 ||  || 1000.00'
+    end
+
+    context 'the account has insufficient funds' do
+      it "doesn't create a statement" do
+        statement = Statement.new
+        expect { statement.save_statement(300, '07/02/22', 'debit') }.to raise_error 'Sorry, your balance is insufficient'
+        expect(statement.format_statements.length).to eq 1
+      end
     end
   end
 end

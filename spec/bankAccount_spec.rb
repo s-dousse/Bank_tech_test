@@ -3,31 +3,20 @@
 require 'bankAccount'
 
 describe BankAccount do
-  describe '#balance' do
-    let!(:account) { BankAccount.new }
+  let!(:account) { BankAccount.new }
+  it 'can receive a deposit' do
+    # account = BankAccount.new
 
-    context 'the account has sufficient funds' do
-      it 'has a default balance of 0 when opened' do
-        expect(account.print_balance).to eq('The current balance is 0.00')
-      end
+    deposit = account.deposit(500, '05/02/22')
+    expect(deposit[0].balance).to eq 500.00
+  end
 
-      it 'can receive money' do
-        account.deposit(50.00, '01/01/22')
-        expect(account.print_balance).to eq('The current balance is 50.00')
-      end
+  it 'lets the user make a withdrawal' do
+    # account = BankAccount.new
 
-      it 'can withdraw money' do
-        account.deposit(50.00, '01/01/22')
-        account.withdraw(30.00, '02/01/22')
-        expect(account.print_balance).to eq('The current balance is 20.00')
-      end
-    end
-
-    context 'the account has insufficient funds' do
-      it "can't have a balance below 0" do
-        expect { account.withdraw(30.00, '02/01/22') }.to raise_error 'Sorry, your balance is insufficient'
-      end
-    end
+    account.deposit(500, '05/02/22')
+    withdrawal = account.withdraw(200, '06/02/22')
+    expect(withdrawal[0].balance).to eq 100.00
   end
 
   describe '#statements' do
@@ -42,35 +31,44 @@ describe BankAccount do
       end
 
       it 'has 1 credit statement after a deposit' do
-        account.statements.unshift(double_debit_st)
+        account.statements << double_credit_st
+        
         expect(account.print_statements.length).to be(2)
+        expect(account.print_statements[0]).to eq('date || credit || debit || balance')
+        expect(account.print_statements[1]).to eq('02/01/22 || - || 30.00 || 20.00')
+      end
+
+      it 'has 1 debit statement after a withdral' do
+        account.statements << double_debit_st
+
+        expect(account.print_statements.length).to eq(2)
         expect(account.print_statements[0]).to eq('date || credit || debit || balance')
         expect(account.print_statements[1]).to eq('01/01/22 || 50.00 || - || 50.00')
       end
 
-      it 'has 1 debit statement after a withdral' do
+      it 'has different statements after a couple of transactions' do
+        
         account.statements.unshift(double_debit_st)
-        account.statements.unshift(double_credit_st)
-        expect(account.print_statements.length).to eq(3)
+
+        expect(account.print_statements.length).to eq(2)
         expect(account.print_statements[0]).to eq('date || credit || debit || balance')
-        expect(account.print_statements[1]).to eq('02/01/22 || - || 30.00 || 20.00')
-        expect(account.print_statements[2]).to eq('01/01/22 || 50.00 || - || 50.00')
+        expect(account.print_statements[1]).to eq('01/01/22 || 50.00 || - || 50.00')
       end
     end
 
-    context 'the account has insufficient funds' do
-      it 'creates no statement - withdraw from an empty account' do
-        expect { account.withdraw(30.00, '02/01/22') }.to raise_error 'Sorry, your balance is insufficient'
+    # context 'the account has insufficient funds' do
+    #   xit 'creates no statement - withdraw from an empty account' do
+    #     expect { account.withdraw(30.00, '02/01/22') }.to raise_error 'Sorry, your balance is insufficient'
 
-        expect(account.print_statements.length).to eq(1)
-      end
+    #     expect(account.print_statements.length).to eq(1)
+    #   end
 
-      it 'creates no statement - insufficient funds' do
-        account.deposit(50.00, '01/01/22')
-        expect { account.withdraw(60.00, '02/01/22') }.to raise_error 'Sorry, your balance is insufficient'
-        expect(account.print_balance).to eq('The current balance is 50.00')
-        expect(account.statements.length).to eq(1)
-      end
-    end
+    #   xit 'creates no statement - insufficient funds' do
+    #     account.deposit(50.00, '01/01/22')
+    #     expect { account.withdraw(60.00, '02/01/22') }.to raise_error 'Sorry, your balance is insufficient'
+    #     expect(account.print_balance).to eq('The current balance is 50.00')
+    #     expect(account.statements.length).to eq(1)
+    #   end
+    # end
   end
 end
